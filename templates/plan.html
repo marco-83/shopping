@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Plan
+{% endblock %}
+
+{% block main %}
+
+<form method='POST' enctype='multipart/form-data' id='formId'>
+<p>Select date: <input type="text" name="week_beginning" id="datepicker" ></p>
+</form>
+
+<div>
+    <h2> Meal plan: Week beginning {{ weekday }} {{ date }} </h2>
+    <table class="table table-striped table-bordered" id = "Meal_plan" name = "Meal_plan" style="width:50%">
+        <tr>
+            {% for key, value in dates.items() %}
+            <th> {{ value }} </th>
+            {% endfor %}
+        </tr>
+        <form action="/meal_plan" method = "post" enctype="multipart/form-data">
+            {% for n in range(1,4) %} <!-- Currently 3 meals per day is the only option -->
+            <tr>
+                {% for key, value in dates.items() %}
+                <td>
+                    <select id="meal[{{key}}_{{n}}]" name="meal[{{key}}_{{n}}]" class="custom-select custom-select-sm" style="width:auto;">
+                         {% if n not in dates_in_all_data|selectattr("date", "equalto", key)|map(attribute="meal_no") %}
+                        <option value="" selected disabled> Nothing </option>
+                        {% endif %}
+
+                        {% for meal in meals %}
+
+                        <option value ="{{ meal }}"
+                            {% if meal in dates_in_all_data|selectattr("date", "equalto", key)|
+                            selectattr("meal_no", "equalto", n)|map(attribute="meal") %}
+                            selected {% endif %} > {{ meal }} </option>
+                        {% endfor %}
+                    </select>
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            <input class="btn btn-primary" type="submit" value = "update meal plan", name = meal>
+        </form>
+    </table>
+</div>
+
+{% endblock %}
+
+
+

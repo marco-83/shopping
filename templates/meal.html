@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Meal
+{% endblock %}
+
+{% block main %}
+
+    <form action="/add_meal" method="post">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">Add a new meal</span>
+          </div>
+        <input type="text" name = new_meal class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        <input class="btn btn-primary" type="submit" value = "Add">
+        </div>
+    </form>
+
+<br>
+<div>
+    <form action="/meal" method="post">
+        <div class="form-group">
+            <select  class="custom-select custom-select-sm" style="width:auto;" id = "meal_select" name="meal_select" placeholder="Select meal" onchange="this.form.submit()">
+                {% if meal_selected is none %}
+                <option value="" selected disabled>Modify existing meal ...</option>
+                {% if meals is not none %}
+                {% for meal in meals %}
+                <option value ="{{ meal }}" > {{ meal }} </option>
+                {% endfor %}
+                {% endif %}
+                {% endif %}
+                {% if meal_selected is not none %}
+                {% if meals is not none %}
+                {% for meal in meals %}
+                <option value ="{{ meal }}" {% if meal_selected == meal %} selected {% endif %} > {{ meal }} </option>
+                {% endfor %}
+                {% endif %}
+                {% endif %}
+            </select>
+        </div>
+    </form>
+</div>
+
+<div>
+        <h2> Ingredients list </h2>
+        <table class="table table-striped table-bordered" id = "Ingredients_list" name = "Ingredients_list">
+            <tr>
+                <th> Ingredient </th>
+                <th> Quantity </th>
+                <th> Units </th>
+            </tr>
+            {% if ingredients is not none %}
+            {% for i in ingredients %}
+            <tr>
+                <td> {{ i["ingredient"] }}</td>
+                <td> {{ i["quantity"] }} </td>
+                <td> {{ i["unit"] }} </td>
+                {% if i.ingredient%}
+                <td> <a href="{{ url_for('ingredients_delete', ingredient = i.ingredient) }}"
+                >Delete ingredient </a> </td>
+                {% else %}
+                <td> <a href="{{ url_for('ingredients_delete') }}"
+                >Delete ingredient </a> </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            {% endif %}
+    <form action="/ingredients_add" method = "post" enctype="multipart/form-data" onsubmit="return validate('meal_select', 'meal')">
+        <tr>
+            <td> <input type="text" id ="Ingredient" name = update_ingredients[1]> </td>
+            <td> <input type="text" id ="Quantity" name = update_ingredients[2]
+            onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;"> </td>
+            <td>
+                <select id ="Units" name = update_ingredients[3] class="custom-select custom-select-sm" style="width:auto;">
+                    <option value="" selected disabled>Select units ...</option>
+                    <option value="kilograms" > kilograms </option>
+                    <option value="grams" > grams </option>
+                    <option value="litres" > litres </option>
+                    <option value="millilitres" > millilitres </option>
+                    <option value="pounds" > pounds </option>
+                    <option value="quarts" > quarts </option>
+                    <option value="ounces" > ounces </option>
+                    <option value="loaves" > loaves </option>
+                    <option value="slices" > slices </option>
+                    <option value="cans" > cans </option>
+                    <option value="packets" > packets </option>
+                </select>
+            </td>
+        </tr>
+        </table>
+        <input class="btn btn-primary" type="submit" value = "update ingredients" name = update_ingredients>
+    </form>
+</div>
+
+
+{% endblock %}
+
+
+

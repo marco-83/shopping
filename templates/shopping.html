@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Shopping list
+{% endblock %}
+
+{% block main %}
+
+<form method='POST' enctype='multipart/form-data' id='formId'>
+<p>Select date: <input type="text" name="week_beginning" id="datepicker" ></p>
+</form>
+
+<div>
+    <h2> Shopping list: Week beginning {{ weekday }} {{ date }} </h2>
+    <table class="table table-striped table-bordered" id = "Shopping_list" name = "Shopping_list" style="width:50%">
+        <tr>
+            <th> Item </th>
+            <th> Quantity </th>
+            <th> Units </th>
+        </tr>
+        <form action="/shopping_list" method = "post" enctype="multipart/form-data">
+            {% for row in shopping_list %}
+            <tr>
+                {% for key, value in row.items() %}
+                <td>
+                    {{ value }}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </form>
+    </table>
+</div>
+
+{% endblock %}
+
+
+

@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+
+<div>
+    <h1> Welcome to the shopping list creator! </h1>
+    <br>
+    <div style="text-align:left;">
+        Go to <a href="/meal">the meal designer</a> to add and design your meals.
+        <br>
+        Go to <a href="/plan">the menu planner</a> to plan out your week. You can plan for up to three meals per day.
+        <br>
+        Go to <a href="/pantry">your pantry</a> (optional) if you wish to subtract what you already have.
+        <br>
+        And finally, go to <a href="/shopping">your shopping list</a> to see what you need to buy for the week!
+        <br>
+    </div>
+</div>
+
+<!--
+<div>
+    <form action="/" method="post">
+        <div class="form-group">
+            <select  class="form-control" name="unit_select" placeholder="Select units" onchange="this.form.submit()">
+                <option value="metric" {% if units_selected == "metric" %} selected {% endif %} > metric </option>
+                <option value="imperial" {% if units_selected == "imperial" %} selected {% endif %} > US imperial </option>
+            </select>
+        </div>
+    </form>
+</div>
+-->
+{% endblock %}

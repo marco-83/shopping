@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <form action="/register" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="confirmation" placeholder="Confirm password" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+
+    <script>
+    const form = document.getElementById("register");
+    const username = form.querySelector("input[name=username]");
+    let checkUser = true;
+
+    form.addEventListener("submit", function(event) {
+      if (checkUser) {
+        // Prevent the form from submitting
+        event.preventDefault();
+
+        // Check the username
+        $.get("/check?username=" + username.value, function (data) {
+          if (data === false) {
+            alert("Username is not available!");
+          } else {
+            // Resubmit the form without the user check
+            checkUser = false;
+            form.submit();
+            return;
+          }
+        });
+      }
+
+      // Reset the variable for the next check
+      checkUser = true;
+    });
+    </script>
+{% endblock %}
+
